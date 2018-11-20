@@ -158,13 +158,13 @@ void Quad::MapTexture()
 	std::string name = this->m_textures[m_buttonState];
 	std::wstring wName = std::wstring(name.begin(), name.end());
 
-	if (Manager::g_textureManager.getTexture(name))
+	if (Manager::g_textureManager.GetTexture(name))
 	{
-		Manager::g_textureManager.getTexture(name)->Bind(1);
+		Manager::g_textureManager.GetTexture(name)->Bind(1);
 	}
-	else if (Manager::g_textureManager.getGUITextureByName(wName))
+	else if (Manager::g_textureManager.GetGUITextureByName(wName))
 	{
-		Manager::g_textureManager.getGUITextureByName(wName)->Bind(1);
+		Manager::g_textureManager.GetGUITextureByName(wName)->Bind(1);
 	}
 	else
 		std::cout << "Can't Find Texture: " << this->m_textures[m_buttonState] << std::endl;

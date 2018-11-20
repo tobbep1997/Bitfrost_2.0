@@ -29,20 +29,15 @@ public:
 
 	void Clear();
 	void Flush(Camera & camera);
+	void Present();
+
 
 	void Release();
-
-	//Starts the new frame for imgui
-	void ImGuiStartFrame();
-
+	
 	//---------------------------------
 	//Explicit window related function
 	Window& GetWindow();
 	ProcMsg GetWindowProcMsg();
-
-	void ImGuiProc();
-
-	void ReSet();
 
 private:
 	void _reloadShaders();

@@ -595,23 +595,6 @@ void ForwardRender::_OutlineDepthCreate()
 void ForwardRender::_createShaders()
 {
 
-	//TODO:: ADD NEW SHADER FOR ANIMATED OBJECTS, CONNECT TOANIMATEDINPUTDESC
-
-	m_shaderThreads[2] = std::thread(&ForwardRender::_createShadersInput, this);
-	m_shaderThreads[0] = std::thread([]() {DX::g_shaderManager.LoadShader<ID3D11PixelShader>(L"../Engine/EngineSource/Shader/PixelShader.hlsl");  });
-	//m_shaderThreads[1] = std::thread([]() {DX::g_shaderManager.LoadShader<ID3D11VertexShader>(L"../Engine/EngineSource/Shader/Shaders/VisabilityShader/VisabilityVertex.hlsl");  });
-
-	DX::g_shaderManager.LoadShader<ID3D11PixelShader>(L"../Engine/EngineSource/Shader/Shaders/VisabilityShader/VisabilityPixel.hlsl");
-	DX::g_shaderManager.LoadShader<ID3D11VertexShader>(L"../Engine/EngineSource/Shader/Shaders/ShadowMap/ShadowVertexAnimated.hlsl");
-	DX::g_shaderManager.LoadShader<ID3D11PixelShader>(L"../Engine/EngineSource/Shader/Shaders/GuardFrustum/GuardFrustumPixel.hlsl");
-
-	DX::g_shaderManager.LoadShader<ID3D11VertexShader>(L"../Engine/EngineSource/Shader/Shaders/OutlinePrepassVertex.hlsl");
-	DX::g_shaderManager.LoadShader<ID3D11PixelShader>(L"../Engine/EngineSource/Shader/Shaders/OutlinePixelShader.hlsl");
-
-	DX::g_shaderManager.LoadShader<ID3D11VertexShader>(L"../Engine/EngineSource/Shader/Shaders/VisabilityShader/PreDepthPassVertex.hlsl");
-	DX::g_shaderManager.LoadShader<ID3D11VertexShader>(L"../Engine/EngineSource/Shader/Shaders/VisabilityShader/PreDepthPassVertexAnimated.hlsl");
-
-	
 }
 
 void ForwardRender::_createShadersInput()
@@ -658,15 +641,6 @@ void ForwardRender::_createShadersInput()
 	{ "TANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	{ "UV", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 48, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
-	DX::g_shaderManager.VertexInputLayout(L"../Engine/EngineSource/Shader/Shaders/OutlinePrepassVertex.hlsl", "main", outlineInputDesc, 4);
-
-	DX::g_shaderManager.VertexInputLayout(L"../Engine/EngineSource/Shader/VertexShader.hlsl", "main", inputDesc, 11);
-
-	DX::g_shaderManager.VertexInputLayout(L"../Engine/EngineSource/Shader/PreAnimatedVertexShader.hlsl", "main", animatedInputDesc, 6);
-
-	DX::g_shaderManager.VertexInputLayout(L"../Engine/EngineSource/Shader/AnimatedVertexShader.hlsl", "main", postAnimatedInputDesc, 4);
-
-	DX::g_shaderManager.VertexInputLayout(L"../Engine/EngineSource/Shader/Shaders/GuardFrustum/GuardFrustumVertex.hlsl", "main", guardFrustumInputDesc, 3);
 }
 
 void ForwardRender::_wireFramePass(Camera * camera)
@@ -677,22 +651,10 @@ void ForwardRender::_wireFramePass(Camera * camera)
 	DX::g_deviceContext->VSSetShader(DX::g_shaderManager.GetShader<ID3D11VertexShader>(L"../Engine/EngineSource/Shader/VertexShader.hlsl"), nullptr, 0);
 	DX::g_deviceContext->RSSetViewports(1, &m_viewport);
 	DX::g_deviceContext->OMSetRenderTargets(1, &m_backBufferRTV, nullptr);
-	
-	//_SetStaticShaders();
-	//Manager::g_textureManager.GetTexture("BAR")->Bind(1);
+
+
 	DX::g_deviceContext->PSSetShader(DX::g_shaderManager.GetShader<ID3D11PixelShader>(L"../Engine/EngineSource/Shader/Shaders/wireFramePixel.hlsl"), nullptr, 0);
 	if (DX::INSTANCING::g_instanceWireFrameGroups.size() > 0)
 		DrawInstanced(camera, &DX::INSTANCING::g_instanceWireFrameGroups, false);
-	//for (unsigned int i = 0; i < DX::g_wireFrameDrawQueue.size(); i++)
-	//{
-	//	ID3D11Buffer * vertexBuffer = DX::g_wireFrameDrawQueue[i]->GetBuffer();
 
-	//	_mapObjectBuffer(DX::g_wireFrameDrawQueue[i]);
-	//	DX::g_wireFrameDrawQueue[i]->BindTextures();
-	//	DX::g_deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &vertexSize, &offSet);
-	//	DX::g_deviceContext->Draw(DX::g_wireFrameDrawQueue[i]->GetVertexSize(), 0);
-
-	//}
-
-	//DX::g_deviceContext->RSSetState(m_standardRast);
 }

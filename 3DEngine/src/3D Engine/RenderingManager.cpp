@@ -7,7 +7,6 @@ RenderingManager::RenderingManager()
 {
 	m_wnd = new Window();
 	m_engine = new Engine3D();
-	m_ImGuiManager = new ImGuiManager();
 }
 
 
@@ -15,7 +14,6 @@ RenderingManager::~RenderingManager()
 {
 	delete m_wnd;
 	delete m_engine;
-	delete m_ImGuiManager;
 }
 
 RenderingManager * RenderingManager::GetInstance()
@@ -37,19 +35,13 @@ void RenderingManager::Init(HINSTANCE hInstance)
 	wind.clientHeight = 720;
 	wind.fullscreen = false;
 	wind.windowInstance = hInstance;
-	wind.windowTitle = L"RipTag";
+	wind.windowTitle = L"BitFrost 2.0";
 	//Will override the Settings above
 	SettingLoader::LoadWindowSettings(wind);
 	m_wnd->Init(wind);
 
 	m_engine->Init(m_wnd->GetHandler(), wind.fullscreen, wind.clientWidth, wind.clientHeight);
-
-	if (DEBUG)
-	{
-		m_ImGuiManager->Init(m_wnd->GetHandler());
-	}
-	
-	
+		
 }
 
 void RenderingManager::Update()
@@ -58,10 +50,6 @@ void RenderingManager::Update()
 	{
 		InputHandler::WindowSetShowCursor();
 		m_wnd->PollEvents();
-		if (DEBUG)
-		{
-			m_ImGuiManager->ImGuiProcPoll(m_wnd->GetWindowProcMsg());
-		}
 	#if _DEBUG
 		if (GetAsyncKeyState(int('P')))
 		{
@@ -76,10 +64,7 @@ void RenderingManager::UpdateSingleThread()
 {
 	InputHandler::WindowSetShowCursor();
 	m_wnd->PollEvents();
-	if (DEBUG)
-	{
-		m_ImGuiManager->ImGuiProcPoll(m_wnd->GetWindowProcMsg());
-	}
+
 #if _DEBUG
 	if (GetAsyncKeyState(int('P')))
 	{
@@ -97,33 +82,20 @@ void RenderingManager::Flush(Camera & camera)
 {
 	//Draws Everything in the queue
 	m_engine->Flush(camera);
-	
-	if(DEBUG)
-	{
-		m_ImGuiManager->Draw();
-	}
-
-	m_engine->Present();
 	DX::g_deviceContext->ClearState();
+}
+
+void RenderingManager::Present()
+{
+	m_engine->Present();
 }
 
 void RenderingManager::Release()
 {
 	m_engine->Release();
-	if (DEBUG)
-	{
-		m_ImGuiManager->Release();
-	}
 }
 
-void RenderingManager::ImGuiStartFrame()
-{
-	//Starts the new ImGui frame
-	//TODO: This might be changed. This needs to be called before ImGui::begin()
-	if (DEBUG) {
-		m_ImGuiManager->StartFrame();
-	}
-}
+
 
 Window& RenderingManager::GetWindow()
 {
@@ -135,42 +107,7 @@ ProcMsg RenderingManager::GetWindowProcMsg()
 	return m_wnd->GetWindowProcMsg();
 }
 
-void RenderingManager::ImGuiProc()
-{
-	if (DEBUG)
-	{
-		m_ImGuiManager->ImGuiProcPoll(m_wnd->GetWindowProcMsg());
-	}
-}
-
-void RenderingManager::ReSet()
-{
-	// TODO :: Reload window and engine
-
-	//WindowContext wind;
-	//wind.clientWidth = 1280;
-	//wind.clientHeight = 720;
-	//wind.fullscreen = false;
-	//wind.windowInstance = m_hInstance;
-	//wind.windowTitle = L"RipTag";
-	////Will override the Settings above
-	//SettingLoader::LoadWindowSettings(wind);
-
-	//m_engine->Release();
-	//m_wnd->Init(wind);
-	//m_engine->Init(m_wnd->GetHandler(), wind.fullscreen, wind.clientWidth, wind.clientHeight);
-	//_reloadShaders();
-
-	//if (DEBUG)
-	//{
-	//	m_ImGuiManager->Release();
-	//	m_ImGuiManager->Init(m_wnd->GetHandler());
-	//}
-}
-
 void RenderingManager::_reloadShaders()
 {
-	bool f = true;
-	if (f)
-		DX::g_shaderManager.ReloadAllShaders();
+	DX::g_shaderManager.ReloadAllShaders();
 }

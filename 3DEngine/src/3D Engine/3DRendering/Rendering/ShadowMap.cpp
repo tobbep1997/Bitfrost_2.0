@@ -13,8 +13,6 @@ ShadowMap::~ShadowMap()
 
 void ShadowMap::Init(UINT width, UINT height)
 {
-	DX::g_shaderManager.LoadShader<ID3D11VertexShader>(L"../Engine/EngineSource/Shader/Shaders/ShadowMap/ShadowVertex.hlsl");
-	ID3D11GeometryShader * test = DX::g_shaderManager.LoadShader<ID3D11GeometryShader>(L"../Engine/EngineSource/Shader/Shaders/ShadowMap/ShadowGeometry.hlsl");
 
 	_createRenderTarGets(width, height);
 	_createBuffers();

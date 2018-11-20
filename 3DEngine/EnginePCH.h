@@ -36,8 +36,3 @@
 #include "2DEngine/src/Render2D.h"
 
 #include "Input/InputManager/InputHandler.h"
-
-#include "3DEngine/src/Debugg/ImGui/imgui.h"
-#include "3DEngine/src/Debugg/ImGui/ImGuiManager.h"
-#include "3DEngine/src/Debugg/ImGui/imgui_impl_win32.h"
-#include "3DEngine/src/Debugg/ImGui/imgui_impl_dx11.h"

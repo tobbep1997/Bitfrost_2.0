@@ -32,13 +32,8 @@ protected:
 
 	//Setting the mesh for the object
 	virtual void p_SetMesh(StaticMesh * staticMesh);
-	virtual void p_SetMesh(SkinnedMesh * skinnedMesh);
-	
 
 public:
-	virtual void p_createBoundingBox(const DirectX::XMFLOAT3 & center, const DirectX::XMFLOAT3 & extens);
-	
-
 	Drawable();
 	virtual ~Drawable();
 	virtual void SetTexture(Texture * texture);	
