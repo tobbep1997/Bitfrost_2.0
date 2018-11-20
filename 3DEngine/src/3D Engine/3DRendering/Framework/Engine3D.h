@@ -25,6 +25,7 @@ private:
 
 
 	UINT m_sampleCount = 1;
+	UINT m_bufferCount = 3;	//When using triple buffer stuff go faster
 	
 public:
 	Engine3D();

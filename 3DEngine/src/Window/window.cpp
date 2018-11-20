@@ -255,6 +255,7 @@ void Window::PollEvents()
 
 bool Window::isOpen()
 {
+	return WM_QUIT != m_Peekmsg.message;
 	if (InputHandler::GetClosedGame())
 	{
 		return false;

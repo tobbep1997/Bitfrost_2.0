@@ -8,7 +8,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 {
 	RenderingManager * renderingManager = RenderingManager::GetInstance();
 	renderingManager->Init(hInstance);
-
+	
 	while (renderingManager->GetWindow().isOpen())
 	{
 		renderingManager->Update();
