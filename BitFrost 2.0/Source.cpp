@@ -10,6 +10,7 @@
 
 #include <vector>
 #include "3DEngine/src/3D Engine/Components/Base/Drawable.h"
+#include "Input/InputManager/InputHandler.h"
 
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
@@ -55,6 +56,18 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	while (renderingManager->GetWindow().isOpen())
 	{
 		renderingManager->Clear();
+		if (InputHandler::isKeyPressed('W'))
+		{
+			DirectX::XMFLOAT4A e = temp->GetPosition();
+			e.z = e.z + 0.01f;
+			temp->SetPosition(e);
+		}
+		if (InputHandler::isKeyPressed('D'))
+		{
+			temp->AddRotation(0, 0.1f,0);
+		}
+		
+		//temp->SetPosition()
 		temp->Draw();
 		renderingManager->Update();
 		Camera cam = Camera();

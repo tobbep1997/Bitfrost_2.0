@@ -67,13 +67,10 @@ void StaticMesh::LoadMesh(const std::string & path)
 
 	//TODO: Create a new mesh loader
 
-	const  aiScene * test = aiImportFile("C:/Users/Root/Desktop/Bitfrost_2.0/3x3x3.fbx", aiProcessPreset_TargetRealtime_MaxQuality);
+	const  aiScene * test = aiImportFile("../3x3x3.fbx", aiProcess_Triangulate);//aiProcessPreset_TargetRealtime_MaxQuality);
+	
+	//const  aiScene * test = aiImportFile("C:/Users/Root/Desktop/Bitfrost_2.0/3x3x3.fbx", aiProcesspre);
 
-	//imp.ReadFile("")
-
-	//std::vector<float> mesh;
-	////test->mMeshes[]
-	//mesh.reserve(test->mNumMeshes);
 
 	aiMesh * meshg = test->mMeshes[0];
 	

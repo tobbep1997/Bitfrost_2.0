@@ -88,12 +88,12 @@ void ForwardRender::GeometryPass(Camera & camera)
 	DX::g_deviceContext->OMSetBlendState(m_alphaBlend, 0, 0xffffffff);
 	
 	
-	DX::g_deviceContext->IASetInputLayout(DX::g_shaderManager.GetInputLayout(L"../Engine/EngineSource/Shader/VertexShader.hlsl"));
-	DX::g_deviceContext->VSSetShader(DX::g_shaderManager.GetShader<ID3D11VertexShader>(L"../Engine/EngineSource/Shader/VertexShader.hlsl"), nullptr, 0);
+	DX::g_deviceContext->IASetInputLayout(DX::g_shaderManager.GetInputLayout(L"../3DEngine/src/Shader/VertexShader.hlsl"));
+	DX::g_deviceContext->VSSetShader(DX::g_shaderManager.GetShader<ID3D11VertexShader>(L"../3DEngine/src/Shader/VertexShader.hlsl"), nullptr, 0);
 	DX::g_deviceContext->HSSetShader(nullptr, nullptr, 0);
 	DX::g_deviceContext->DSSetShader(nullptr, nullptr, 0);
 	DX::g_deviceContext->GSSetShader(nullptr, nullptr, 0);
-	DX::g_deviceContext->PSSetShader(DX::g_shaderManager.GetShader<ID3D11PixelShader>(L"../Engine/EngineSource/Shader/PixelShader.hlsl"), nullptr, 0);
+	DX::g_deviceContext->PSSetShader(DX::g_shaderManager.GetShader<ID3D11PixelShader>(L"../3DEngine/src/Shader/PixelShader.hlsl"), nullptr, 0);
 	DX::g_deviceContext->RSSetViewports(1, &m_viewport);
 	DX::g_deviceContext->OMSetRenderTargets(1, &m_backBufferRTV, m_depthStencilView);
 	//_SetStaticShaders();
@@ -174,7 +174,7 @@ void ForwardRender::Flush(Camera & camera)
 	DX::g_deviceContext->OMSetDepthStencilState(m_depthStencilState, NULL);
 	DX::g_deviceContext->PSSetSamplers(1, 1, &m_samplerState);
 	DX::g_deviceContext->PSSetSamplers(2, 1, &m_shadowSampler);
-	this->PrePass(camera);
+	//this->PrePass(camera);
 		
 	DX::g_deviceContext->PSSetSamplers(1, 1, &m_samplerState);
 	DX::g_deviceContext->PSSetSamplers(2, 1, &m_shadowSampler);
@@ -182,18 +182,18 @@ void ForwardRender::Flush(Camera & camera)
 
 	_mapLightInfoNoMatrix();
 	this->m_shadowMap->MapAllLightMatrix(&DX::g_lights);
-	this->m_shadowMap->ShadowPass(this);
+	//this->m_shadowMap->ShadowPass(this);
 	this->m_shadowMap->SetSamplerAndShaderResources();
-	
+	_mapCameraBuffer(camera);
 	this->GeometryPass(camera);
-	this->_OutliningPass(camera);
+	//this->_OutliningPass(camera);
 
 	//_GuardFrustumDraw();
-	_mapCameraBuffer(camera);	
+	
 
 	DX::g_deviceContext->OMSetRenderTargets(1, &m_backBufferRTV, nullptr);
-	m_2DRender->GUIPass();
-	this->_wireFramePass(&camera);
+	//m_2DRender->GUIPass();
+	//this->_wireFramePass(&camera);
 }
 
 void ForwardRender::Clear()
@@ -286,10 +286,10 @@ void ForwardRender::DrawInstanced(Camera* camera, std::vector<DX::INSTANCING::GR
 		//-----------------------------------------------------------
 		if (bindTextures)
 		{
-			std::string textureName = instance.textureName;
-			size_t t = textureName.find_last_of('/');
-			textureName = textureName.substr(t + 1);
-			Manager::g_textureManager.GetTexture(textureName)->Bind(1);
+			//std::string textureName = instance.textureName;
+			//size_t t = textureName.find_last_of('/');
+			//textureName = textureName.substr(t + 1);
+			//Manager::g_textureManager.GetTexture(textureName)->Bind(1);
 		}
 		//-----------------------------------------------------------
 
@@ -594,7 +594,25 @@ void ForwardRender::_OutlineDepthCreate()
 
 void ForwardRender::_createShaders()
 {
+	D3D11_INPUT_ELEMENT_DESC inputDesc[] = {
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 16, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "UV", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 48, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		//World matrix
+		{ "WORLD", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+		{ "WORLD", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+		{ "WORLD", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+		{ "WORLD", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+		//Attributes
+		{ "COLOR" , 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 64, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+		{ "UVMULT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 80, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+		{ "INFO" , 0, DXGI_FORMAT_R32G32B32A32_SINT, 1, 96, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+	};
 
+	DX::g_shaderManager.VertexInputLayout(L"../3DEngine/src/Shader/VertexShader.hlsl", "main", inputDesc, 11);
+
+	DX::g_shaderManager.LoadShader<ID3D11PixelShader>(L"../3DEngine/src/Shader/PixelShader.hlsl");
 }
 
 void ForwardRender::_createShadersInput()
