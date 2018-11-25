@@ -246,7 +246,7 @@ bool Window::Init(_In_ WindowContext windowContext)
 
 void Window::PollEvents()
 {
-	while (PeekMessage(&m_Peekmsg, nullptr, 0, 0, PM_REMOVE))
+	if (PeekMessage(&m_Peekmsg, nullptr, 0, 0, PM_REMOVE))
 	{
 		TranslateMessage(&m_Peekmsg);
 		DispatchMessage(&m_Peekmsg);

@@ -71,6 +71,8 @@ public:
 
 	std::string GetTextureName() const;
 
+	void loadmodl();
+
 private:
 	virtual void _SetStaticBuffer();
 };

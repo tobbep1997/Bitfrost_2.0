@@ -58,6 +58,11 @@ std::string Drawable::GetTextureName() const
 	return std::string(this->p_texture->GetName().begin(), this->p_texture->GetName().end());
 }
 
+void Drawable::loadmodl()
+{
+	m_staticMesh->LoadMesh("wop");
+}
+
 void Drawable::p_createBuffer()
 {
 	_SetStaticBuffer();
@@ -88,6 +93,7 @@ Drawable::Drawable() : Transform()
 	m_outLineColor = DirectX::XMFLOAT4A(1, 1, 1, 1);
 	m_outline = false;
 	m_transparant = false;
+	m_staticMesh = new StaticMesh();
 }
 
 Drawable::~Drawable()

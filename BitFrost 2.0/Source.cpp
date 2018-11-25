@@ -1,9 +1,15 @@
 #include <iostream>
 #include <Windows.h>
+
+//#include <assimp/material.h>
+
+#include <3DEngine/src/3D Engine/Components/Camera.h>
+#include <3DEngine/src/3D Engine/Model/Texture.h>
 #include "3DEngine/src/3D Engine/RenderingManager.h"
 #include "3DEngine/src/Window/window.h"
-#include <assimp/cimport.h>
-#include <assimp/postprocess.h>
+
+#include <vector>
+#include "3DEngine/src/3D Engine/Components/Base/Drawable.h"
 
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
@@ -17,13 +23,43 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	 * och jag har bara includat detta i bitfrost2.0
 	 */
 
-	//const  aiScene * test = aiImportFile("C:/Users/Root/Desktop/Bitfrost_2.0/BitFrost 2.0",aiProcessPreset_TargetRealtime_MaxQuality);
+	
+
+	Drawable * temp = new Drawable();
+	temp->loadmodl();
+	Texture * tex = new Texture();
+	std::wstring te;
+	te = L"C:/Users/Root/Desktop/Bitfrost_2.0/Namnlos.png";
+	tex->LoadSingleTexture(te.c_str());
+	temp->SetTexture(tex);
+
+	temp->Draw();
+	//const  aiScene * test = aiImportFile("C:/Users/Root/Desktop/Bitfrost_2.0/3x3x3.fbx",aiProcessPreset_TargetRealtime_MaxQuality);
+	
 	//imp.ReadFile("")
+
+	//std::vector<float> mesh;
+	////test->mMeshes[]
+	//mesh.reserve(test->mNumMeshes);
+
+	//aiMesh * meshg = test->mMeshes[0];
+	
+	//std::vector<int> verts;
+	//aiVector3D pos = meshg->mVertices[0];
+	//aiVector3D poss = meshg->mVertices[2];
+
+
+	//aiReleaseImport(test);
 	
 	
 	while (renderingManager->GetWindow().isOpen())
 	{
+		renderingManager->Clear();
+		temp->Draw();
 		renderingManager->Update();
+		Camera cam = Camera();
+		renderingManager->Flush(cam);
+
 		renderingManager->Present();
 	}
 	renderingManager->Release();

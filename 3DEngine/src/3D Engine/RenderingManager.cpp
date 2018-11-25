@@ -46,7 +46,7 @@ void RenderingManager::Init(HINSTANCE hInstance)
 
 void RenderingManager::Update()
 {
-	while (m_wnd->isOpen())
+	//while (m_wnd->isOpen())
 	{
 		InputHandler::WindowSetShowCursor();
 		m_wnd->PollEvents();

@@ -108,13 +108,13 @@ void ForwardRender::PrePass(Camera & camera)
 {
 	//THIS IS VERY FUCKING IMPORTANT 
 	//THIS WILL KILL EVERYTHING
-	if (m_firstRun == true)
-	{
-		m_shaderThreads[0].join();
-		//m_shaderThreads[1].join();
-		m_shaderThreads[2].join();
-		m_firstRun = false;
-	}
+	//if (m_firstRun == true)
+	//{
+	//	m_shaderThreads[0].join();
+	//	//m_shaderThreads[1].join();
+	//	m_shaderThreads[2].join();
+	//	m_firstRun = false;
+	//}
 	//DONT FUCKING TOUCH
 	DX::g_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	DX::g_deviceContext->IASetInputLayout(DX::g_shaderManager.GetInputLayout(L"../Engine/EngineSource/Shader/VertexShader.hlsl"));
