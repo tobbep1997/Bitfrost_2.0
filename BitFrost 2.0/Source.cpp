@@ -30,7 +30,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	temp->loadmodl();
 	Texture * tex = new Texture();
 	std::wstring te;
-	te = L"C:/Users/Root/Desktop/Bitfrost_2.0/Namnlos.png";
+	te = L"../Namnlos.png";
 	tex->LoadSingleTexture(te.c_str());
 	temp->SetTexture(tex);
 
