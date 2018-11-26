@@ -67,44 +67,52 @@ void StaticMesh::LoadMesh(const std::string & path)
 
 	//TODO: Create a new mesh loader
 
-	const  aiScene * test = aiImportFile("../3x3x3.fbx", aiProcess_Triangulate);//aiProcessPreset_TargetRealtime_MaxQuality);
-	
-	//const  aiScene * test = aiImportFile("C:/Users/Root/Desktop/Bitfrost_2.0/3x3x3.fbx", aiProcesspre);
+	const  aiScene * scene = aiImportFile("../3x3x3.fbx", aiProcess_Triangulate);//aiProcessPreset_TargetRealtime_MaxQuality);
 
-
-	aiMesh * meshg = test->mMeshes[0];
-	
-	//m_staticVerte
-	//m_staticVertex.reserve(meshg->mNumVertices);
-	for (unsigned int i = 0; i < meshg->mNumVertices; i++)
+	if (!scene)
 	{
-		StaticVertex tep{};
-		aiVector3D pos = meshg->mVertices[i];
-		aiVector3D norm = meshg->mNormals[i];
-		//aiVector3D uv = meshg->m
-		tep.pos.x = pos.x;
-		tep.pos.y = pos.y;
-		tep.pos.z = pos.z;
-
-		tep.normal.x = norm.x;
-		tep.normal.y = norm.y;
-		tep.normal.z = norm.z;
-
-		tep.normal.x = norm.x;
-		tep.normal.y = norm.y;
-		tep.normal.z = norm.z;
-
-		tep.tangent.x = 0;
-		tep.tangent.y = 0;
-		tep.tangent.z = 0;
-
-		tep.uvPos.x = 1;
-		tep.uvPos.y = 1;
-
-		m_staticVertex.push_back(tep);
+		std::cerr << "Could not load file" << path << aiGetErrorString() << std::endl;
+		return;
 	}
+	
+	for (std::uint16_t meshIdx = 0; meshIdx < scene->mNumMeshes; meshIdx++)
+	{
+		aiMesh * mesh = scene->mMeshes[meshIdx];
 
-	aiReleaseImport(test);
+		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+		{
+			StaticVertex tep{};
+			aiVector3D pos		= mesh->mVertices[i];
+			aiVector3D norm		= mesh->mNormals[i];
+			aiVector3D tangent	= mesh->mTangents[i];
+
+			tep.pos.x = pos.x;
+			tep.pos.y = pos.y;
+			tep.pos.z = pos.z;
+
+			tep.normal.x = norm.x;
+			tep.normal.y = norm.y;
+			tep.normal.z = norm.z;
+
+			tep.normal.x = norm.x;
+			tep.normal.y = norm.y;
+			tep.normal.z = norm.z;
+
+			tep.tangent.x = tangent.x;
+			tep.tangent.y = tangent.y;
+			tep.tangent.z = tangent.z;
+
+			tep.uvPos.x = mesh->mTextureCoords[0][i].x;;
+			tep.uvPos.y = mesh->mTextureCoords[0][i].y;;
+
+			m_staticVertex.push_back(tep);
+		}
+
+		
+	}
+	
+
+	aiReleaseImport(scene);
 	_createVertexBuffer();
 }
 
