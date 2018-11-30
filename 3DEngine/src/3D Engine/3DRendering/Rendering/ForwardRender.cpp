@@ -292,10 +292,10 @@ void ForwardRender::DrawInstanced(Camera* camera, std::vector<DX::INSTANCING::GR
 			//tex->LoadSingleTexture(te.c_str());
 			//tex->Bind(1);
 
-			//std::string textureName = instance.textureName;
-			//size_t t = textureName.find_last_of('/');
-			//textureName = textureName.substr(t + 1);
-			//Manager::g_textureManager.GetTexture(textureName)->Bind(1);
+			std::string textureName = instance.textureName;
+			size_t t = textureName.find_last_of('/');
+			textureName = textureName.substr(t + 1);
+			Manager::g_textureManager.GetTexture(textureName)->Bind(1);
 			
 		}
 		//-----------------------------------------------------------

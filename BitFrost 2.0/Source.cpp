@@ -31,8 +31,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	Texture * tex = new Texture();
 	std::string te;
 	std::wstring tee;
-	te = "../Namnlos.png";
-	tee = L"../Namnlos.png";
+	te = "NAMLOS";
+	tee = L"NAMLOS";
 	tex->SetName(tee);
 	tex->LoadTexture(te);
 	temp->SetTexture(tex);
