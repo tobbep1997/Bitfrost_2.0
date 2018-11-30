@@ -22,6 +22,7 @@
     <ClCompile Include="src\3D Engine\Components\Base\Drawable.cpp" />
     <ClCompile Include="src\3D Engine\Components\Base\Transform.cpp" />
     <ClCompile Include="src\3D Engine\Components\Camera.cpp" />
+    <ClCompile Include="src\3D Engine\Model\Managers\MeshLoader.cpp" />
     <ClCompile Include="src\3D Engine\Model\Managers\MeshManager.cpp" />
     <ClCompile Include="src\3D Engine\Model\Managers\ModelManager.cpp" />
     <ClCompile Include="src\3D Engine\Model\Managers\TextureManager.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="src\3D Engine\Components\Base\Transform.h" />
     <ClInclude Include="src\3D Engine\Components\Camera.h" />
     <ClInclude Include="src\3D Engine\Extern.h" />
+    <ClInclude Include="src\3D Engine\Model\Managers\MeshLoader.h" />
     <ClInclude Include="src\3D Engine\Model\Managers\MeshManager.h" />
     <ClInclude Include="src\3D Engine\Model\Managers\ModelManager.h" />
     <ClInclude Include="src\3D Engine\Model\Managers\TextureManager.h" />

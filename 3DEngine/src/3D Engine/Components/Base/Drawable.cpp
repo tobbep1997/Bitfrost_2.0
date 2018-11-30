@@ -60,7 +60,7 @@ std::string Drawable::GetTextureName() const
 
 void Drawable::loadmodl()
 {
-	m_staticMesh->LoadMesh("wop");
+	m_staticMesh->LoadMesh("../3x3x3.fbx");
 }
 
 void Drawable::p_createBuffer()

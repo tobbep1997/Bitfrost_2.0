@@ -4,6 +4,8 @@
 #include <assimp/cimport.h>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include "3DEngine/src/3D Engine/Model/Managers/MeshLoader.h"
+
 void StaticMesh::_createVertexBuffer()
 {
 	DX::SafeRelease(m_vertexBuffer);
@@ -67,52 +69,7 @@ void StaticMesh::LoadMesh(const std::string & path)
 
 	//TODO: Create a new mesh loader
 
-	const  aiScene * scene = aiImportFile("../3x3x3.fbx", aiProcess_Triangulate);//aiProcessPreset_TargetRealtime_MaxQuality);
-
-	if (!scene)
-	{
-		std::cerr << "Could not load file" << path << aiGetErrorString() << std::endl;
-		return;
-	}
-	
-	for (std::uint16_t meshIdx = 0; meshIdx < scene->mNumMeshes; meshIdx++)
-	{
-		aiMesh * mesh = scene->mMeshes[meshIdx];
-
-		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
-		{
-			StaticVertex tep{};
-			aiVector3D pos		= mesh->mVertices[i];
-			aiVector3D norm		= mesh->mNormals[i];
-			aiVector3D tangent	= mesh->mTangents[i];
-
-			tep.pos.x = pos.x;
-			tep.pos.y = pos.y;
-			tep.pos.z = pos.z;
-
-			tep.normal.x = norm.x;
-			tep.normal.y = norm.y;
-			tep.normal.z = norm.z;
-
-			tep.normal.x = norm.x;
-			tep.normal.y = norm.y;
-			tep.normal.z = norm.z;
-
-			tep.tangent.x = tangent.x;
-			tep.tangent.y = tangent.y;
-			tep.tangent.z = tangent.z;
-
-			tep.uvPos.x = mesh->mTextureCoords[0][i].x;;
-			tep.uvPos.y = mesh->mTextureCoords[0][i].y;;
-
-			m_staticVertex.push_back(tep);
-		}
-
-		
-	}
-	
-
-	aiReleaseImport(scene);
+	bool test = MeshLoader::LoadMesh(path, m_staticVertex);
 	_createVertexBuffer();
 }
 
