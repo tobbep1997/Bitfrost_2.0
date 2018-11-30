@@ -71,6 +71,8 @@ HRESULT Texture::LoadSingleTexture(const wchar_t * absolutePath)
 	std::wstring file = absolutePath;
 
 	HRESULT hr = DirectX::CreateWICTextureFromFile(DX::g_device, DX::g_deviceContext, file.c_str(), nullptr, &m_SRV[0]);
+	hr = DirectX::CreateWICTextureFromFile(DX::g_device, DX::g_deviceContext, file.c_str(), nullptr, &m_SRV[1]);
+	hr = DirectX::CreateWICTextureFromFile(DX::g_device, DX::g_deviceContext, file.c_str(), nullptr, &m_SRV[2]);
 	if (FAILED(hr))
 	{
 		std::string p = std::string(file.begin(), file.end());
@@ -81,6 +83,14 @@ HRESULT Texture::LoadSingleTexture(const wchar_t * absolutePath)
 		return hr;
 	}
 	return E_FAIL;
+
+	//;
+}
+
+HRESULT Texture::LoadTexture(const std::string& path)
+{
+	Manager::g_textureManager.loadTextures(path);
+	return S_OK;
 }
 
 void Texture::Bind(const uint8_t slot)

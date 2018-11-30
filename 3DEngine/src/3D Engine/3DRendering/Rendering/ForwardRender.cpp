@@ -274,7 +274,7 @@ void ForwardRender::DrawInstanced(Camera* camera, std::vector<DX::INSTANCING::GR
 		instBuffDesc.Usage = D3D11_USAGE_DEFAULT;
 		instBuffDesc.ByteWidth = sizeof(OBJECT) * (UINT)instance.attribs.size();
 		instBuffDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-
+		
 		D3D11_SUBRESOURCE_DATA instData;
 		memset(&instData, 0, sizeof(instData));
 		instData.pSysMem = instance.attribs.data();
@@ -286,10 +286,17 @@ void ForwardRender::DrawInstanced(Camera* camera, std::vector<DX::INSTANCING::GR
 		//-----------------------------------------------------------
 		if (bindTextures)
 		{
+			//Texture * tex = new Texture();
+			//std::wstring te;
+			//te = L"../Namnlos.png";
+			//tex->LoadSingleTexture(te.c_str());
+			//tex->Bind(1);
+
 			//std::string textureName = instance.textureName;
 			//size_t t = textureName.find_last_of('/');
 			//textureName = textureName.substr(t + 1);
 			//Manager::g_textureManager.GetTexture(textureName)->Bind(1);
+			
 		}
 		//-----------------------------------------------------------
 

@@ -29,9 +29,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	Drawable * temp = new Drawable();
 	temp->loadmodl();
 	Texture * tex = new Texture();
-	std::wstring te;
-	te = L"../Namnlos.png";
-	tex->LoadSingleTexture(te.c_str());
+	std::string te;
+	std::wstring tee;
+	te = "../Namnlos.png";
+	tee = L"../Namnlos.png";
+	tex->SetName(tee);
+	tex->LoadTexture(te);
 	temp->SetTexture(tex);
 
 	temp->Draw();
