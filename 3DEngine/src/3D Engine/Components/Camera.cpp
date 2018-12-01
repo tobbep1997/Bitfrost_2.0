@@ -122,7 +122,7 @@ void Camera::Rotate(const DirectX::XMFLOAT4A & rotation)
 
 	DirectX::XMVECTOR vDot = DirectX::XMVector3Dot(vNewDir, vUp);
 	float dot = DirectX::XMVectorGetX(vDot);
-	if (fabs(dot) < 0.90)
+	if (fabs(dot) < 0.98)
 	{
 		DirectX::XMStoreFloat4A(&this->m_direction, DirectX::XMVector3Normalize(vNewDir));
 		m_direction.w = 0.0f;
@@ -234,6 +234,45 @@ const DirectX::XMFLOAT4X4A & Camera::GetViewProjection()
 	_calcViewMatrix(m_usingDir);
 	_calcViewProjectionMatrix();
 	return this->m_viewProjection;
+}
+
+void Camera::CameraMovementCheat(const double & deltaTIme)
+{
+	if (InputHandler::isKeyPressed('W'))
+		Translate(0.0f, 0.0f, 0.5f * deltaTIme);
+	else if (InputHandler::isKeyPressed('S'))
+		Translate(0.0f, 0.0f, -0.5f * deltaTIme);
+	if (InputHandler::isKeyPressed('A'))
+		Translate(-0.5f * deltaTIme, 0.0f, 0.0f);
+	else if (InputHandler::isKeyPressed('D'))
+		Translate(0.5f * deltaTIme, 0.0f, 0.0f);
+
+	if (InputHandler::isMRightPressed())
+	{
+		InputHandler::setShowCursor(FALSE);
+		if (m_firstPos)
+		{
+			m_lockPos = InputHandler::getMousePositionLH();
+			m_realLock = InputHandler::getMousePosition();
+
+			m_firstPos = false;
+		}
+		
+		DirectX::XMFLOAT2 current = InputHandler::getMousePositionLH();
+
+		float x = current.x - m_lockPos.x;
+		float y = current.y - m_lockPos.y;
+
+		m_lockPos = InputHandler::getMousePositionLH();
+
+		Rotate((y * deltaTIme) * -1, (x * deltaTIme) , 0);
+	}
+	else
+	{
+		InputHandler::setShowCursor(TRUE);
+		m_firstPos = true;
+	}
+	InputHandler::WindowSetShowCursor();
 }
 
 DirectX::XMFLOAT4A Camera::_Add(const DirectX::XMFLOAT4A & a, const DirectX::XMFLOAT4A & b)

@@ -29,6 +29,9 @@ class Camera : public Transform
 	float m_nearPlane, m_farPlane;
 	bool m_usingDir = true;
 
+	DirectX::XMFLOAT2 m_lockPos;
+	DirectX::XMFLOAT2 m_realLock;
+	bool m_firstPos = true;
 
 public:
 	Camera(float fov = DirectX::XM_PI * 0.5f, float aspectRatio = 16.0f/9.0f, float nearPlane = 0.1f, float farPlane = 10.0f);
@@ -80,6 +83,7 @@ public:
 	const DirectX::XMFLOAT4X4A & GetViewProjection();
 	//-------------------------------------------------------------------------------------------	
 
+	void CameraMovementCheat(const double & deltaTIme);
 private:
 	//-------------------------------------------------------------------------------------------	
 	/*

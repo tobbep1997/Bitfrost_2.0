@@ -13,9 +13,22 @@
 #include "Input/InputManager/InputHandler.h"
 #include "3DEngine/src/Light/PointLight.h"
 
+void _alocConsole() {
+	AllocConsole();
+	FILE* fp;
+	freopen_s(&fp, "CONOUT$", "w", stdout);
+}
+
+void _CrtSetDbg() {
+	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+}
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
+	_alocConsole();
+	_CrtSetDbg();
+
 	RenderingManager * renderingManager = RenderingManager::GetInstance();
 	renderingManager->Init(hInstance);
 
@@ -58,31 +71,32 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 
 	//aiReleaseImport(test);
-	
+	Camera cam = Camera();
 	
 	while (renderingManager->GetWindow().isOpen())
 	{
 		renderingManager->Clear();
-		if (InputHandler::isKeyPressed('W'))
-		{
-			DirectX::XMFLOAT4A e = temp->GetPosition();
-			e.z = e.z + 0.01f;
-			temp->SetPosition(e);
-		}
-		if (InputHandler::isKeyPressed('D'))
-		{
-			temp->AddRotation(0, 0.1f,0);
-		}
-		
+		temp->AddRotation(0.1f * 0.1f, 0.01f * 0.1f, 0.01f * 0.1f);
+
+		//Some Movement
+		cam.CameraMovementCheat(1.f/60.0f);
+		cam.GetDirection();
+		//std::cout << "Dir: X" << cam.GetDirection().x << " Y: " << cam.GetDirection().y << " Z: " << cam.GetDirection().z << std::endl;
 		//temp->SetPosition()
 		temp->Draw();
 		p_pointLight->QueueLight();
 		renderingManager->Update();
-		Camera cam = Camera();
+		
 		renderingManager->Flush(cam);
 
 		renderingManager->Present();
 	}
+
+	delete temp;
+	delete tex;
+	delete p_pointLight;
+	
+
 	renderingManager->Release();
 	return 0;
 }
