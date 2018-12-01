@@ -11,6 +11,7 @@
 #include <vector>
 #include "3DEngine/src/3D Engine/Components/Base/Drawable.h"
 #include "Input/InputManager/InputHandler.h"
+#include "3DEngine/src/Light/PointLight.h"
 
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
@@ -39,7 +40,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	temp->Draw();
 	//const  aiScene * test = aiImportFile("C:/Users/Root/Desktop/Bitfrost_2.0/3x3x3.fbx",aiProcessPreset_TargetRealtime_MaxQuality);
-	
+	float pos[3] = { 2,2,2 };
+	float col[3] = { 255,0,0 };
+	PointLight * p_pointLight = new PointLight(pos,col,10);
+	//p_pointLight->setColor(90, 112.0f, 130.0f);
 	//imp.ReadFile("")
 
 	//std::vector<float> mesh;
@@ -72,6 +76,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		
 		//temp->SetPosition()
 		temp->Draw();
+		p_pointLight->QueueLight();
 		renderingManager->Update();
 		Camera cam = Camera();
 		renderingManager->Flush(cam);
